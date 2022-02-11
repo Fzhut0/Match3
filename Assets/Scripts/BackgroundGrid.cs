@@ -4,8 +4,7 @@ using UnityEngine;
 
 public class BackgroundGrid : MonoBehaviour
 {
-    [SerializeField] GameObject[] balls;
-    [SerializeField] BoardPosList data;
+    [SerializeField] BoardData data;
     [SerializeField] List<Vector2> nearTiles = new List<Vector2>();
 
 
@@ -22,8 +21,8 @@ public class BackgroundGrid : MonoBehaviour
     }
     void SpawnBalls()
     {
-        int ballToUse = Random.Range(0, balls.Length);
-        GameObject ball = Instantiate(balls[ballToUse], transform.position, Quaternion.identity);
+        int ballToUse = Random.Range(0, data.ballPrefabs.Length);
+        GameObject ball = Instantiate(data.ballPrefabs[ballToUse], transform.position, Quaternion.identity);
         ball.transform.parent = gameObject.transform;
         data.tilesList.Add(transform.position);
     }

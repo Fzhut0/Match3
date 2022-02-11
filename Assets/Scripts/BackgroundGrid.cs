@@ -6,15 +6,19 @@ public class BackgroundGrid : MonoBehaviour
 {
     [SerializeField] GameObject[] balls;
     [SerializeField] BoardPosList data;
+    [SerializeField] List<Vector2> nearTiles = new List<Vector2>();
 
 
-    private void Start()
+    private void Awake()
     {
-        int xPos = Mathf.RoundToInt(transform.position.x);
-        int yPos = Mathf.RoundToInt(transform.position.y);
 
         SpawnBalls();
 
+    }
+
+    private void Start()
+    {
+        CheckNearTiles();
     }
     void SpawnBalls()
     {
@@ -24,6 +28,17 @@ public class BackgroundGrid : MonoBehaviour
         data.tilesList.Add(transform.position);
     }
 
+    void CheckNearTiles()
+    {
+        foreach (Vector2 pos in data.tilesList)
+        {
+            if (Vector2.Distance(transform.position, pos) == 1)
+            {
+                nearTiles.Add(pos);
+            }
+        }
+
+    }
 
 }
 

@@ -7,15 +7,23 @@ public class BoardManager : MonoBehaviour
     public int width;
     public int height;
     [SerializeField] GameObject backgroundPrefab;
-
+    public GameObject[] balls;
+    private BackgroundGrid[,] allTiles;
+    public GameObject[,] allBalls;
 
     private void Awake()
     {
 
-        SpawnBackground();
+
     }
 
+    private void Start()
+    {
+        allTiles = new BackgroundGrid[width, height];
+        allBalls = new GameObject[width, height];
+        SpawnBackground();
 
+    }
 
     void SpawnBackground()
     {
@@ -27,8 +35,16 @@ public class BoardManager : MonoBehaviour
                 GameObject backgroundTile = Instantiate(backgroundPrefab, spawnPos, Quaternion.identity);
                 backgroundTile.transform.parent = gameObject.transform;
                 backgroundTile.name = "(" + x + "," + y + ")";
+                int ballToUse = Random.Range(0, balls.Length);
+
+                GameObject ball = Instantiate(balls[ballToUse], spawnPos, Quaternion.identity);
+                ball.transform.parent = backgroundTile.transform;
+                ball.name = gameObject.name;
+                allBalls[x, y] = ball;
             }
         }
+
+
     }
 
 

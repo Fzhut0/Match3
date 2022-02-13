@@ -6,7 +6,7 @@ using UnityEngine;
 
 public class BoardManager : MonoBehaviour
 {
-    // public BallData ballData;
+    public SpecialObjectHandler specialObject;
     public BoardData data;
     public GameState currentState = GameState.move;
 
@@ -38,7 +38,7 @@ public class BoardManager : MonoBehaviour
                     ballToUse = Random.Range(0, data.balls.Length);
                     maxIterations++;
                 }
-                maxIterations = 0;
+
 
                 GameObject ball = Instantiate(data.balls[ballToUse], spawnPos, Quaternion.identity);
                 ball.GetComponent<Ball>().row = y;
@@ -89,11 +89,13 @@ public class BoardManager : MonoBehaviour
     {
         if (data.allBalls[column, row].GetComponent<Ball>().isMatched)
         {
-            if (findMatches.currentMatches.Count == 4 || findMatches.currentMatches.Count == 7)
+
+
+            if (findMatches.specialObject.currentMatches.Count == 5 || findMatches.specialObject.currentMatches.Count == 7)
             {
                 findMatches.CheckForBomb();
             }
-            findMatches.currentMatches.Remove(data.allBalls[column, row]);
+            findMatches.specialObject.currentMatches.Remove(data.allBalls[column, row]);
             Destroy(data.allBalls[column, row]);
             data.allBalls[column, row] = null;
 

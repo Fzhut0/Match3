@@ -14,7 +14,7 @@ public class MatchFinder : MonoBehaviour
 
     private void Start()
     {
-        currentMatches.Clear();
+        specialObject.currentMatches.Clear();
     }
     private void Update()
     {
@@ -40,14 +40,14 @@ public class MatchFinder : MonoBehaviour
                         {
                             if (leftBall.tag == currentBall.tag && rightBall.tag == currentBall.tag)
                             {
-                                if (!currentMatches.Contains(leftBall))
-                                { currentMatches.Add(leftBall); }
+                                if (!specialObject.currentMatches.Contains(leftBall))
+                                { specialObject.currentMatches.Add(leftBall); }
                                 leftBall.GetComponent<Ball>().isMatched = true;
-                                if (!currentMatches.Contains(rightBall))
-                                { currentMatches.Add(rightBall); }
+                                if (!specialObject.currentMatches.Contains(rightBall))
+                                { specialObject.currentMatches.Add(rightBall); }
                                 rightBall.GetComponent<Ball>().isMatched = true;
-                                if (!currentMatches.Contains(currentBall))
-                                { currentMatches.Add(currentBall); }
+                                if (!specialObject.currentMatches.Contains(currentBall))
+                                { specialObject.currentMatches.Add(currentBall); }
                                 currentBall.GetComponent<Ball>().isMatched = true;
                             }
                         }
@@ -60,14 +60,14 @@ public class MatchFinder : MonoBehaviour
                         {
                             if (downBall.tag == currentBall.tag && upBall.tag == currentBall.tag)
                             {
-                                if (!currentMatches.Contains(downBall))
-                                { currentMatches.Add(downBall); }
+                                if (!specialObject.currentMatches.Contains(downBall))
+                                { specialObject.currentMatches.Add(downBall); }
                                 downBall.GetComponent<Ball>().isMatched = true;
-                                if (!currentMatches.Contains(upBall))
-                                { currentMatches.Add(upBall); }
+                                if (!specialObject.currentMatches.Contains(upBall))
+                                { specialObject.currentMatches.Add(upBall); }
                                 upBall.GetComponent<Ball>().isMatched = true;
-                                if (!currentMatches.Contains(currentBall))
-                                { currentMatches.Add(currentBall); }
+                                if (!specialObject.currentMatches.Contains(currentBall))
+                                { specialObject.currentMatches.Add(currentBall); }
                                 currentBall.GetComponent<Ball>().isMatched = true;
                             }
                         }

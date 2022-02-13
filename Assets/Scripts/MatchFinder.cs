@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class MatchFinder : MonoBehaviour
 {
+    public BoardData boardData;
+
     private BoardManager board;
     public List<GameObject> currentMatches = new List<GameObject>();
 
@@ -15,17 +17,17 @@ public class MatchFinder : MonoBehaviour
     IEnumerator FindAllMatches()
     {
         yield return new WaitForSeconds(.2f);
-        for (int x = 0; x < board.width; x++)
+        for (int x = 0; x < boardData.width; x++)
         {
-            for (int y = 0; y < board.height; y++)
+            for (int y = 0; y < boardData.height; y++)
             {
-                GameObject currentBall = board.allBalls[x, y];
+                GameObject currentBall = boardData.allBalls[x, y];
                 if (currentBall != null)
                 {
-                    if (x > 0 && x < board.width - 1)
+                    if (x > 0 && x < boardData.width - 1)
                     {
-                        GameObject leftBall = board.allBalls[x - 1, y];
-                        GameObject rightBall = board.allBalls[x + 1, y];
+                        GameObject leftBall = boardData.allBalls[x - 1, y];
+                        GameObject rightBall = boardData.allBalls[x + 1, y];
                         if (leftBall != null && rightBall != null)
                         {
                             if (leftBall.tag == currentBall.tag && rightBall.tag == currentBall.tag)
@@ -42,10 +44,10 @@ public class MatchFinder : MonoBehaviour
                             }
                         }
                     }
-                    if (y > 0 && y < board.height - 1)
+                    if (y > 0 && y < boardData.height - 1)
                     {
-                        GameObject downBall = board.allBalls[x, y - 1];
-                        GameObject upBall = board.allBalls[x, y + 1];
+                        GameObject downBall = boardData.allBalls[x, y - 1];
+                        GameObject upBall = boardData.allBalls[x, y + 1];
                         if (upBall != null && downBall != null)
                         {
                             if (downBall.tag == currentBall.tag && upBall.tag == currentBall.tag)

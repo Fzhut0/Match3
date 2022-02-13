@@ -5,6 +5,7 @@ using UnityEngine;
 public class Ball : MonoBehaviour
 {
     BallData data;
+    public BoardData boardData;
 
     private MatchFinder findMatches;
     public int column;
@@ -62,9 +63,9 @@ public class Ball : MonoBehaviour
         {
             tempPos = new Vector2(targetX, transform.position.y);
             transform.position = Vector2.Lerp(transform.position, tempPos, .6f);
-            if (board.allBalls[column, row] != gameObject)
+            if (boardData.allBalls[column, row] != gameObject)
             {
-                board.allBalls[column, row] = gameObject;
+                boardData.allBalls[column, row] = gameObject;
             }
             findMatches.FindMatches();
         }
@@ -77,9 +78,9 @@ public class Ball : MonoBehaviour
         {
             tempPos = new Vector2(transform.position.x, targetY);
             transform.position = Vector2.Lerp(transform.position, tempPos, .6f);
-            if (board.allBalls[column, row] != gameObject)
+            if (boardData.allBalls[column, row] != gameObject)
             {
-                board.allBalls[column, row] = gameObject;
+                boardData.allBalls[column, row] = gameObject;
             }
             findMatches.FindMatches();
         }
@@ -125,19 +126,19 @@ public class Ball : MonoBehaviour
 
     void MovePieces()
     {
-        if (swipeAngle > -45 && swipeAngle <= 45 && column < board.width - 1)
+        if (swipeAngle > -45 && swipeAngle <= 45 && column < boardData.width - 1)
         {
             // right
-            otherBall = board.allBalls[column + 1, row];
+            otherBall = boardData.allBalls[column + 1, row];
             previousColumn = column;
             previousRow = row;
             otherBall.GetComponent<Ball>().column -= 1;
             column += 1;
         }
-        else if (swipeAngle > 45 && swipeAngle <= 135 && row < board.height - 1)
+        else if (swipeAngle > 45 && swipeAngle <= 135 && row < boardData.height - 1)
         {
             // up
-            otherBall = board.allBalls[column, row + 1];
+            otherBall = boardData.allBalls[column, row + 1];
             previousColumn = column;
             previousRow = row;
             otherBall.GetComponent<Ball>().row -= 1;
@@ -146,7 +147,7 @@ public class Ball : MonoBehaviour
         else if (swipeAngle > 135 || swipeAngle <= -135 && column > 0)
         {
             // left
-            otherBall = board.allBalls[column - 1, row];
+            otherBall = boardData.allBalls[column - 1, row];
             previousColumn = column;
             previousRow = row;
             otherBall.GetComponent<Ball>().column += 1;
@@ -155,7 +156,7 @@ public class Ball : MonoBehaviour
         else if (swipeAngle < -45 && swipeAngle >= -135 && row > 0)
         {
             //down
-            otherBall = board.allBalls[column, row - 1];
+            otherBall = boardData.allBalls[column, row - 1];
             previousColumn = column;
             previousRow = row;
             otherBall.GetComponent<Ball>().row += 1;
@@ -166,10 +167,10 @@ public class Ball : MonoBehaviour
 
     void FindMatches()
     {
-        if (column > 0 && column < board.width - 1)
+        if (column > 0 && column < boardData.width - 1)
         {
-            GameObject leftDot1 = board.allBalls[column - 1, row];
-            GameObject rightDot1 = board.allBalls[column + 1, row];
+            GameObject leftDot1 = boardData.allBalls[column - 1, row];
+            GameObject rightDot1 = boardData.allBalls[column + 1, row];
             if (leftDot1 != null && rightDot1 != null)
             {
                 if (leftDot1.tag == gameObject.tag && rightDot1.tag == gameObject.tag)
@@ -180,10 +181,10 @@ public class Ball : MonoBehaviour
                 }
             }
         }
-        if (row > 0 && row < board.height - 1)
+        if (row > 0 && row < boardData.height - 1)
         {
-            GameObject upDot1 = board.allBalls[column, row + 1];
-            GameObject downDot1 = board.allBalls[column, row - 1];
+            GameObject upDot1 = boardData.allBalls[column, row + 1];
+            GameObject downDot1 = boardData.allBalls[column, row - 1];
             if (upDot1 != null && downDot1 != null)
             {
                 if (upDot1.tag == gameObject.tag && downDot1.tag == gameObject.tag)

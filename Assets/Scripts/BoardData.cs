@@ -1,16 +1,34 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
-[CreateAssetMenu(menuName = "Tile and ball data")]
+public enum GameState
+{
+    wait,
+    move
+}
+[CreateAssetMenu(fileName = "BoardData", menuName = "BoardManagerData")]
 public class BoardData : ScriptableObject
 {
-    public List<Vector2> tilesList = new List<Vector2>();
-    public GameObject[] ballPrefabs;
 
-    private void OnEnable()
+
+    public GameState currentState = GameState.move;
+    public int width;
+    public int height;
+    public int offset;
+
+    public GameObject backgroundPrefab;
+    public GameObject[] balls;
+    public BackgroundGrid[,] allTiles;
+    public GameObject[,] allBalls;
+
+
+    public enum GameState
     {
-        tilesList.Clear();
+        wait,
+        move
     }
+
+
+
 }
 

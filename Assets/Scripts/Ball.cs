@@ -6,7 +6,7 @@ public class Ball : MonoBehaviour
 {
     BallData data;
 
-
+    private MatchFinder findMatches;
     public int column;
     public int row;
 
@@ -35,20 +35,22 @@ public class Ball : MonoBehaviour
     private void Start()
     {
         board = FindObjectOfType<BoardManager>();
+        findMatches = FindObjectOfType<MatchFinder>();
+        /*
+                targetX = (int)transform.position.x;
+                targetY = (int)transform.position.y;
 
-        targetX = (int)transform.position.x;
-        targetY = (int)transform.position.y;
+                row = targetY;
+                column = targetX;
 
-        row = targetY;
-        column = targetX;
-
-        previousColumn = column;
-        previousRow = row;
+                previousColumn = column;
+                previousRow = row;
+        */
     }
 
     private void Update()
     {
-        FindMatches();
+        // FindMatches();
         if (isMatched)
         {
             GetComponent<SpriteRenderer>().enabled = false;
@@ -64,6 +66,7 @@ public class Ball : MonoBehaviour
             {
                 board.allBalls[column, row] = gameObject;
             }
+            findMatches.FindMatches();
         }
         else
         {
@@ -78,6 +81,7 @@ public class Ball : MonoBehaviour
             {
                 board.allBalls[column, row] = gameObject;
             }
+            findMatches.FindMatches();
         }
         else
         {
@@ -90,13 +94,19 @@ public class Ball : MonoBehaviour
 
     private void OnMouseDown()
     {
-        firstTouchPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        if (board.currentState == GameState.move)
+        {
+            firstTouchPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        }
     }
 
     private void OnMouseUp()
     {
-        finalTouchPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        CalculateAngle();
+        if (board.currentState == GameState.move)
+        {
+            finalTouchPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            CalculateAngle();
+        }
     }
 
     void CalculateAngle()
@@ -105,6 +115,11 @@ public class Ball : MonoBehaviour
         {
             swipeAngle = Mathf.Atan2(finalTouchPos.y - firstTouchPos.y, finalTouchPos.x - firstTouchPos.x) * 180 / Mathf.PI;
             MovePieces();
+            board.currentState = GameState.wait;
+        }
+        else
+        {
+            board.currentState = GameState.move;
         }
     }
 
@@ -114,6 +129,8 @@ public class Ball : MonoBehaviour
         {
             // right
             otherBall = board.allBalls[column + 1, row];
+            previousColumn = column;
+            previousRow = row;
             otherBall.GetComponent<Ball>().column -= 1;
             column += 1;
         }
@@ -121,13 +138,17 @@ public class Ball : MonoBehaviour
         {
             // up
             otherBall = board.allBalls[column, row + 1];
+            previousColumn = column;
+            previousRow = row;
             otherBall.GetComponent<Ball>().row -= 1;
             row += 1;
         }
-        else if (swipeAngle > 135 && swipeAngle <= -135 && column > 0)
+        else if (swipeAngle > 135 || swipeAngle <= -135 && column > 0)
         {
             // left
             otherBall = board.allBalls[column - 1, row];
+            previousColumn = column;
+            previousRow = row;
             otherBall.GetComponent<Ball>().column += 1;
             column -= 1;
         }
@@ -135,6 +156,8 @@ public class Ball : MonoBehaviour
         {
             //down
             otherBall = board.allBalls[column, row - 1];
+            previousColumn = column;
+            previousRow = row;
             otherBall.GetComponent<Ball>().row += 1;
             row -= 1;
         }
@@ -183,10 +206,13 @@ public class Ball : MonoBehaviour
                 otherBall.GetComponent<Ball>().row = row;
                 row = previousRow;
                 column = previousColumn;
+                yield return new WaitForSeconds(.5f);
+                board.currentState = GameState.move;
             }
             else
             {
-                board.CheckDestroyMatches();
+                board.DestroyMatches();
+
             }
         }
         otherBall = null;

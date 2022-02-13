@@ -20,7 +20,7 @@ public class BoardData : ScriptableObject
     public GameObject[] balls;
     public BackgroundGrid[,] allTiles;
     public GameObject[,] allBalls;
-
+    public Ball selectedBall;
 
     public enum GameState
     {

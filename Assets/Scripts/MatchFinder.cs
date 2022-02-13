@@ -1,18 +1,26 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
 public class MatchFinder : MonoBehaviour
 {
     public BoardData boardData;
+    public SpecialObjectHandler specialObject;
+    public TextMeshProUGUI scoreDisplay;
 
-    private BoardManager board;
     public List<GameObject> currentMatches = new List<GameObject>();
+
 
     private void Start()
     {
-        board = FindObjectOfType<BoardManager>();
+        currentMatches.Clear();
     }
+    private void Update()
+    {
+        scoreDisplay.text = currentMatches.Count.ToString();
+    }
+
 
     IEnumerator FindAllMatches()
     {
@@ -72,5 +80,37 @@ public class MatchFinder : MonoBehaviour
     public void FindMatches()
     {
         StartCoroutine(FindAllMatches());
+    }
+
+    public void MatchBallsOfColor(string color)
+    {
+        for (int x = 0; x < boardData.width; x++)
+        {
+            for (int y = 0; y < boardData.height; y++)
+            {
+                if (boardData.allBalls[x, y] != null)
+                {
+                    if (boardData.allBalls[x, y].tag == color)
+                    {
+                        boardData.allBalls[x, y].GetComponent<Ball>().isMatched = true;
+                        boardData.selectedBall.isMatched = false;
+
+                    }
+                }
+            }
+        }
+    }
+
+    public void CheckForBomb()
+    {
+        if (boardData.selectedBall != null)
+        {
+            if (boardData.selectedBall.isMatched)
+            {
+                boardData.selectedBall.isMatched = false;
+                boardData.selectedBall.isColorBomb = true;
+                boardData.selectedBall.CreateColorBomb();
+            }
+        }
     }
 }

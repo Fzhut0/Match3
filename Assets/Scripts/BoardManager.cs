@@ -6,6 +6,7 @@ using UnityEngine;
 
 public class BoardManager : MonoBehaviour
 {
+    // public BallData ballData;
     public BoardData data;
     public GameState currentState = GameState.move;
 
@@ -46,6 +47,7 @@ public class BoardManager : MonoBehaviour
                 ball.transform.parent = backgroundTile.transform;
                 ball.name = gameObject.name;
                 data.allBalls[x, y] = ball;
+
             }
         }
     }
@@ -87,9 +89,14 @@ public class BoardManager : MonoBehaviour
     {
         if (data.allBalls[column, row].GetComponent<Ball>().isMatched)
         {
+            if (findMatches.currentMatches.Count == 4 || findMatches.currentMatches.Count == 7)
+            {
+                findMatches.CheckForBomb();
+            }
             findMatches.currentMatches.Remove(data.allBalls[column, row]);
             Destroy(data.allBalls[column, row]);
             data.allBalls[column, row] = null;
+
         }
     }
 

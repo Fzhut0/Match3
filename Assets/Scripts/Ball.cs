@@ -4,10 +4,11 @@ using UnityEngine;
 
 public class Ball : MonoBehaviour
 {
-    BallData data;
+    public BallData ballData;
     public BoardData boardData;
 
     private MatchFinder findMatches;
+
     public int column;
     public int row;
 
@@ -18,7 +19,7 @@ public class Ball : MonoBehaviour
     public int targetY;
 
     private BoardManager board;
-    private GameObject otherBall;
+    public GameObject otherBall;
 
     private Vector2 firstTouchPos;
     private Vector2 finalTouchPos;
@@ -28,13 +29,16 @@ public class Ball : MonoBehaviour
     public float swipeAngle = 0;
     public float swipeResist = 1f;
 
-    private void Awake()
-    {
+    public Material colorBombMaterial;
+    public Material originalMaterial;
+    public bool isColorBomb;
 
-    }
+    public List<GameObject> nearBalls = new List<GameObject>();
 
     private void Start()
     {
+
+        GetComponent<SpriteRenderer>().material = originalMaterial;
         board = FindObjectOfType<BoardManager>();
         findMatches = FindObjectOfType<MatchFinder>();
         /*
@@ -47,50 +51,21 @@ public class Ball : MonoBehaviour
                 previousColumn = column;
                 previousRow = row;
         */
+        // CheckNearTiles();
     }
+
 
     private void Update()
     {
-        // FindMatches();
-        if (isMatched)
+        SwitchBallPosition();
+        if (isColorBomb)
         {
-            GetComponent<SpriteRenderer>().enabled = false;
-        }
-        targetX = column;
-        targetY = row;
-
-        if (Mathf.Abs(targetX - transform.position.x) > .1)
-        {
-            tempPos = new Vector2(targetX, transform.position.y);
-            transform.position = Vector2.Lerp(transform.position, tempPos, .6f);
-            if (boardData.allBalls[column, row] != gameObject)
-            {
-                boardData.allBalls[column, row] = gameObject;
-            }
-            findMatches.FindMatches();
+            GetComponent<SpriteRenderer>().material = colorBombMaterial;
         }
         else
         {
-            tempPos = new Vector2(targetX, transform.position.y);
-            transform.position = tempPos;
+            GetComponent<SpriteRenderer>().material = originalMaterial;
         }
-        if (Mathf.Abs(targetY - transform.position.y) > .1)
-        {
-            tempPos = new Vector2(transform.position.x, targetY);
-            transform.position = Vector2.Lerp(transform.position, tempPos, .6f);
-            if (boardData.allBalls[column, row] != gameObject)
-            {
-                boardData.allBalls[column, row] = gameObject;
-            }
-            findMatches.FindMatches();
-        }
-        else
-        {
-            tempPos = new Vector2(transform.position.x, targetY);
-            transform.position = tempPos;
-        }
-
-
     }
 
     private void OnMouseDown()
@@ -115,16 +90,18 @@ public class Ball : MonoBehaviour
         if (Mathf.Abs(finalTouchPos.y - firstTouchPos.y) > swipeResist || Mathf.Abs(finalTouchPos.x - firstTouchPos.x) > swipeResist)
         {
             swipeAngle = Mathf.Atan2(finalTouchPos.y - firstTouchPos.y, finalTouchPos.x - firstTouchPos.x) * 180 / Mathf.PI;
-            MovePieces();
+            MoveBalls();
             board.currentState = GameState.wait;
+            boardData.selectedBall = this;
         }
         else
         {
             board.currentState = GameState.move;
+
         }
     }
 
-    void MovePieces()
+    void MoveBalls()
     {
         if (swipeAngle > -45 && swipeAngle <= 45 && column < boardData.width - 1)
         {
@@ -162,52 +139,34 @@ public class Ball : MonoBehaviour
             otherBall.GetComponent<Ball>().row += 1;
             row -= 1;
         }
+
         StartCoroutine(CheckMove());
     }
 
-    void FindMatches()
-    {
-        if (column > 0 && column < boardData.width - 1)
-        {
-            GameObject leftDot1 = boardData.allBalls[column - 1, row];
-            GameObject rightDot1 = boardData.allBalls[column + 1, row];
-            if (leftDot1 != null && rightDot1 != null)
-            {
-                if (leftDot1.tag == gameObject.tag && rightDot1.tag == gameObject.tag)
-                {
-                    leftDot1.GetComponent<Ball>().isMatched = true;
-                    rightDot1.GetComponent<Ball>().isMatched = true;
-                    isMatched = true;
-                }
-            }
-        }
-        if (row > 0 && row < boardData.height - 1)
-        {
-            GameObject upDot1 = boardData.allBalls[column, row + 1];
-            GameObject downDot1 = boardData.allBalls[column, row - 1];
-            if (upDot1 != null && downDot1 != null)
-            {
-                if (upDot1.tag == gameObject.tag && downDot1.tag == gameObject.tag)
-                {
-                    upDot1.GetComponent<Ball>().isMatched = true;
-                    downDot1.GetComponent<Ball>().isMatched = true;
-                    isMatched = true;
-                }
-            }
-        }
-    }
     IEnumerator CheckMove()
     {
+        if (isColorBomb)
+        {
+            findMatches.MatchBallsOfColor(otherBall.tag);
+            isMatched = true;
+        }
+        else if (otherBall.GetComponent<Ball>().isColorBomb)
+        {
+            findMatches.MatchBallsOfColor(gameObject.tag);
+            otherBall.GetComponent<Ball>().isMatched = true;
+        }
+
         yield return new WaitForSeconds(.5f);
         if (otherBall != null)
         {
-            if (!isMatched && !otherBall.GetComponent<Ball>().isMatched)
+            if (!isMatched && !otherBall.GetComponent<Ball>().isMatched && !isColorBomb)
             {
                 otherBall.GetComponent<Ball>().column = column;
                 otherBall.GetComponent<Ball>().row = row;
                 row = previousRow;
                 column = previousColumn;
                 yield return new WaitForSeconds(.5f);
+                boardData.selectedBall = null;
                 board.currentState = GameState.move;
             }
             else
@@ -216,7 +175,62 @@ public class Ball : MonoBehaviour
 
             }
         }
-        otherBall = null;
+        // otherBall = null;
+    }
+
+    void SwitchBallPosition()
+    {
+
+        targetX = column;
+        targetY = row;
+
+        if (Mathf.Abs(targetX - transform.position.x) > .1)
+        {
+            tempPos = new Vector2(targetX, transform.position.y);
+            transform.position = Vector2.Lerp(transform.position, tempPos, .6f);
+            if (boardData.allBalls[column, row] != gameObject)
+            {
+                boardData.allBalls[column, row] = gameObject;
+            }
+            findMatches.FindMatches();
+        }
+        else
+        {
+            tempPos = new Vector2(targetX, transform.position.y);
+            transform.position = tempPos;
+        }
+        if (Mathf.Abs(targetY - transform.position.y) > .1)
+        {
+            tempPos = new Vector2(transform.position.x, targetY);
+            transform.position = Vector2.Lerp(transform.position, tempPos, .6f);
+            if (boardData.allBalls[column, row] != gameObject)
+            {
+                boardData.allBalls[column, row] = gameObject;
+            }
+            findMatches.FindMatches();
+        }
+        else
+        {
+            tempPos = new Vector2(transform.position.x, targetY);
+            transform.position = tempPos;
+        }
+
+    }
+
+    public void CheckNearTiles()
+    {
+        foreach (GameObject pos in boardData.allBalls)
+        {
+            if (Vector2.Distance(transform.position, pos.transform.position) <= 1.5f)
+            {
+                nearBalls.Add(pos);
+            }
+        }
+    }
+
+    public void CreateColorBomb()
+    {
+        isColorBomb = true;
     }
 
 }

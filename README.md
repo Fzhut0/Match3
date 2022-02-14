@@ -14,10 +14,10 @@ Most of data used and shared by core mechanics(spawn, destroy on match, movement
 
 With board data being held in separate object, each level can be easily adjusted.
 
-There are two levels made so far. Next levels could be made with different win conditions like destroying certain amount of specific color, spawning certain amount of special objects, getting certain amount of match combos or just be re-sized with different timings-score to beat.
+There are two levels made so far. Next levels could be made with different win conditions like destroying certain amount of specific color balls, spawning certain amount of special objects, getting certain amount of match combos or board can just be re-sized with different timing-score to beat.
 
 
-DOTween was used for movement and collapsing after match.
+DOTween was used for movement and collapsing after balls match.
 
 
 

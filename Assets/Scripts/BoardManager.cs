@@ -45,7 +45,7 @@ public class BoardManager : MonoBehaviour
                 ball.GetComponent<Ball>().column = x;
 
                 ball.transform.parent = backgroundTile.transform;
-                ball.name = gameObject.name;
+                ball.name = transform.name;
                 data.allBalls[x, y] = ball;
 
             }
@@ -89,6 +89,7 @@ public class BoardManager : MonoBehaviour
     {
         if (data.allBalls[column, row].GetComponent<Ball>().isMatched)
         {
+
             if (findMatches.specialObject.currentMatches.Count == 5 || findMatches.specialObject.currentMatches.Count == 7)
             {
                 findMatches.CheckForColorBomb();
@@ -99,6 +100,9 @@ public class BoardManager : MonoBehaviour
             }
             findMatches.specialObject.allMatches.Add(data.allBalls[column, row]);
             findMatches.specialObject.currentMatches.Remove(data.allBalls[column, row]);
+
+
+
             Destroy(data.allBalls[column, row]);
             data.allBalls[column, row] = null;
 
@@ -139,7 +143,7 @@ public class BoardManager : MonoBehaviour
             }
             nullCount = 0;
         }
-        yield return new WaitForSeconds(.4f);
+        yield return new WaitForSeconds(.2f);
         StartCoroutine(FillBalls());
     }
 
@@ -184,14 +188,14 @@ public class BoardManager : MonoBehaviour
     IEnumerator FillBalls()
     {
         AddNewBalls();
-        yield return new WaitForSeconds(.5f);
+        yield return new WaitForSeconds(.3f);
 
         while (MatchesOnBoard())
         {
-            yield return new WaitForSeconds(.5f);
+            yield return new WaitForSeconds(.3f);
             DestroyMatches();
         }
-        yield return new WaitForSeconds(.5f);
+        yield return new WaitForSeconds(.3f);
         currentState = GameState.move;
     }
 }

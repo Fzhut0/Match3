@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using DG.Tweening;
 public class Ball : MonoBehaviour
 {
     public BallData ballData;
@@ -177,14 +177,18 @@ public class Ball : MonoBehaviour
 
     void SwitchBallPosition()
     {
-
+        if (isMatched)
+        {
+            transform.DOScale(.05f, 1f);
+        }
         targetX = column;
         targetY = row;
 
         if (Mathf.Abs(targetX - transform.position.x) > .1)
         {
+
             tempPos = new Vector2(targetX, transform.position.y);
-            transform.position = Vector2.Lerp(transform.position, tempPos, .6f);
+            transform.DOMove(tempPos, .4f);
             if (boardData.allBalls[column, row] != gameObject)
             {
                 boardData.allBalls[column, row] = gameObject;
@@ -199,7 +203,7 @@ public class Ball : MonoBehaviour
         if (Mathf.Abs(targetY - transform.position.y) > .1)
         {
             tempPos = new Vector2(transform.position.x, targetY);
-            transform.position = Vector2.Lerp(transform.position, tempPos, .6f);
+            transform.DOMove(tempPos, .4f);
             if (boardData.allBalls[column, row] != gameObject)
             {
                 boardData.allBalls[column, row] = gameObject;
@@ -231,10 +235,12 @@ public class Ball : MonoBehaviour
     {
         if (isColorBomb)
         {
+            transform.DOScale(.7f, .5f);
             GetComponent<SpriteRenderer>().sprite = colorBombMaterial;
         }
         else if (isMassBomb)
         {
+            transform.DOScale(.7f, .5f);
             GetComponent<SpriteRenderer>().sprite = massBombMaterial;
         }
         else

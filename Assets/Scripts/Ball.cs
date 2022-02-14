@@ -25,7 +25,6 @@ public class Ball : MonoBehaviour
     private Vector2 finalTouchPos;
     private Vector2 tempPos;
 
-    public bool isMatched = false;
     public float swipeAngle = 0;
     public float swipeResist = 1f;
 
@@ -33,9 +32,11 @@ public class Ball : MonoBehaviour
     public Sprite originalMaterial;
     public Sprite massBombMaterial;
 
-
+    public bool isMatched = false;
     public bool isColorBomb;
     public bool isMassBomb;
+
+    public int scoreAmount;
 
 
     private void Start()

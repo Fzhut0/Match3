@@ -1,26 +1,25 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using TMPro;
 using System.Linq;
 
 public class MatchFinder : MonoBehaviour
 {
     public BoardData boardData;
     public SpecialObjectHandler specialObject;
-    public TextMeshProUGUI scoreDisplay;
 
-    public List<GameObject> currentMatches = new List<GameObject>();
+    // public List<GameObject> currentMatches = new List<GameObject>();
 
 
     private void Start()
     {
         specialObject.currentMatches.Clear();
-        specialObject.allMatches.Clear();
+
     }
     private void Update()
     {
-        scoreDisplay.text = specialObject.allMatches.Count.ToString();
+        // scoreDisplay.text = specialObject.allMatches.Count.ToString();
+
     }
 
 

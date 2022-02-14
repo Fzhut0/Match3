@@ -97,6 +97,7 @@ public class BoardManager : MonoBehaviour
             {
                 findMatches.CheckForMassBomb();
             }
+            findMatches.specialObject.allMatches.Add(data.allBalls[column, row]);
             findMatches.specialObject.currentMatches.Remove(data.allBalls[column, row]);
             Destroy(data.allBalls[column, row]);
             data.allBalls[column, row] = null;

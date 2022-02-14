@@ -9,6 +9,5 @@ public class SpecialObjectHandler : ScriptableObject
 
     public List<GameObject> currentMatches = new List<GameObject>();
 
-
-
+    public List<GameObject> allMatches = new List<GameObject>();
 }

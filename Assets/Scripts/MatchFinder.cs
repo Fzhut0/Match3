@@ -16,10 +16,11 @@ public class MatchFinder : MonoBehaviour
     private void Start()
     {
         specialObject.currentMatches.Clear();
+        specialObject.allMatches.Clear();
     }
     private void Update()
     {
-        scoreDisplay.text = currentMatches.Count.ToString();
+        scoreDisplay.text = specialObject.allMatches.Count.ToString();
     }
 
 

@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using System.Linq;
 
 public class MatchFinder : MonoBehaviour
 {
@@ -49,6 +50,10 @@ public class MatchFinder : MonoBehaviour
                                 if (!specialObject.currentMatches.Contains(currentBall))
                                 { specialObject.currentMatches.Add(currentBall); }
                                 currentBall.GetComponent<Ball>().isMatched = true;
+
+                                specialObject.currentMatches.Union(IsMassBomb(leftBall.GetComponent<Ball>(), currentBall.GetComponent<Ball>(), rightBall.GetComponent<Ball>()));
+
+
                             }
                         }
                     }
@@ -69,6 +74,11 @@ public class MatchFinder : MonoBehaviour
                                 if (!specialObject.currentMatches.Contains(currentBall))
                                 { specialObject.currentMatches.Add(currentBall); }
                                 currentBall.GetComponent<Ball>().isMatched = true;
+
+
+                                specialObject.currentMatches.Union(IsMassBomb(downBall.GetComponent<Ball>(), currentBall.GetComponent<Ball>(), upBall.GetComponent<Ball>()));
+
+
                             }
                         }
                     }
@@ -113,4 +123,40 @@ public class MatchFinder : MonoBehaviour
             }
         }
     }
+
+
+    List<GameObject> GetNearbyBallMatches(int column, int row)
+    {
+        List<GameObject> balls = new List<GameObject>();
+        for (int x = column - 1; x <= column + 1; x++)
+        {
+            for (int y = row - 1; y <= row + 1; y++)
+            {
+                if (x >= 0 && x < boardData.width && y >= 0 && y < boardData.height)
+                {
+                    balls.Add(boardData.allBalls[x, y]);
+                    boardData.allBalls[x, y].GetComponent<Ball>().isMatched = true;
+                }
+            }
+        }
+        return balls;
+    }
+    private List<GameObject> IsMassBomb(Ball ball1, Ball ball2, Ball ball3)
+    {
+        List<GameObject> currentBalls = new List<GameObject>();
+        if (ball1.isMassBomb)
+        {
+            specialObject.currentMatches.Union(GetNearbyBallMatches(ball1.column, ball1.row));
+        }
+        if (ball2.isMassBomb)
+        {
+            specialObject.currentMatches.Union(GetNearbyBallMatches(ball2.column, ball2.row));
+        }
+        if (ball3.isMassBomb)
+        {
+            specialObject.currentMatches.Union(GetNearbyBallMatches(ball3.column, ball3.row));
+        }
+        return currentBalls;
+    }
 }
+

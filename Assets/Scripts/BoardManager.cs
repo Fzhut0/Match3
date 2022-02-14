@@ -73,11 +73,11 @@ public class BoardManager : MonoBehaviour
     {
         if (column > 1 && row > 1)
         {
-            if (data.allBalls[column - 1, row].tag == tile.tag && data.allBalls[column - 2, row])
+            if (data.allBalls[column - 1, row].tag == tile.tag && data.allBalls[column - 2, row].tag == tile.tag)
             {
                 return true;
             }
-            if (data.allBalls[column, row - 1].tag == tile.tag && data.allBalls[column, row - 2])
+            if (data.allBalls[column, row - 1].tag == tile.tag && data.allBalls[column, row - 2].tag == tile.tag)
             {
                 return true;
             }
@@ -106,7 +106,6 @@ public class BoardManager : MonoBehaviour
     {
         if (data.allBalls[column, row].GetComponent<Ball>().isMatched)
         {
-
             if (findMatches.specialObject.currentMatches.Count == 5 || findMatches.specialObject.currentMatches.Count == 7)
             {
                 findMatches.CheckForColorBomb();
@@ -120,7 +119,6 @@ public class BoardManager : MonoBehaviour
 
             Destroy(data.allBalls[column, row]);
             data.allBalls[column, row] = null;
-
         }
     }
 

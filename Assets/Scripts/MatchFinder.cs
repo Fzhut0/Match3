@@ -8,17 +8,10 @@ public class MatchFinder : MonoBehaviour
     public BoardData boardData;
     public SpecialObjectHandler specialObject;
 
-    // public List<GameObject> currentMatches = new List<GameObject>();
-
 
     private void Start()
     {
         specialObject.currentMatches.Clear();
-
-    }
-    private void Update()
-    {
-        // scoreDisplay.text = specialObject.allMatches.Count.ToString();
 
     }
 
@@ -53,10 +46,10 @@ public class MatchFinder : MonoBehaviour
 
                                 specialObject.currentMatches.Union(IsMassBomb(leftBall.GetComponent<Ball>(), currentBall.GetComponent<Ball>(), rightBall.GetComponent<Ball>()));
 
-
                             }
                         }
                     }
+
                     if (y > 0 && y < boardData.height - 1)
                     {
                         GameObject downBall = boardData.allBalls[x, y - 1];
@@ -75,9 +68,7 @@ public class MatchFinder : MonoBehaviour
                                 { specialObject.currentMatches.Add(currentBall); }
                                 currentBall.GetComponent<Ball>().isMatched = true;
 
-
                                 specialObject.currentMatches.Union(IsMassBomb(downBall.GetComponent<Ball>(), currentBall.GetComponent<Ball>(), upBall.GetComponent<Ball>()));
-
 
                             }
                         }
@@ -104,7 +95,6 @@ public class MatchFinder : MonoBehaviour
                     {
                         boardData.allBalls[x, y].GetComponent<Ball>().isMatched = true;
                         boardData.selectedBall.isMatched = false;
-
                     }
                 }
             }

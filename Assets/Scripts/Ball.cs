@@ -41,21 +41,9 @@ public class Ball : MonoBehaviour
 
     private void Start()
     {
-
         GetComponent<SpriteRenderer>().sprite = originalMaterial;
         board = FindObjectOfType<BoardManager>();
         findMatches = FindObjectOfType<MatchFinder>();
-        /*
-                targetX = (int)transform.position.x;
-                targetY = (int)transform.position.y;
-
-                row = targetY;
-                column = targetX;
-
-                previousColumn = column;
-                previousRow = row;
-        */
-
     }
 
 
@@ -231,7 +219,6 @@ public class Ball : MonoBehaviour
     {
         isMassBomb = true;
     }
-
     void BombColorCheck()
     {
         if (isColorBomb)
@@ -248,7 +235,7 @@ public class Ball : MonoBehaviour
         {
             GetComponent<SpriteRenderer>().sprite = originalMaterial;
         }
-
     }
+
 
 }

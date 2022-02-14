@@ -17,9 +17,12 @@ public class BoardData : ScriptableObject
     public int offset;
 
     public GameObject backgroundPrefab;
+
     public GameObject[] balls;
+
     public BackgroundGrid[,] allTiles;
     public GameObject[,] allBalls;
+
     public Ball selectedBall;
 
 

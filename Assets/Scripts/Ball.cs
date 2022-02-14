@@ -29,9 +29,9 @@ public class Ball : MonoBehaviour
     public float swipeAngle = 0;
     public float swipeResist = 1f;
 
-    public Material colorBombMaterial;
-    public Material originalMaterial;
-    public Material massBombMaterial;
+    public Sprite colorBombMaterial;
+    public Sprite originalMaterial;
+    public Sprite massBombMaterial;
 
 
     public bool isColorBomb;
@@ -41,7 +41,7 @@ public class Ball : MonoBehaviour
     private void Start()
     {
 
-        GetComponent<SpriteRenderer>().material = originalMaterial;
+        GetComponent<SpriteRenderer>().sprite = originalMaterial;
         board = FindObjectOfType<BoardManager>();
         findMatches = FindObjectOfType<MatchFinder>();
         /*
@@ -231,21 +231,17 @@ public class Ball : MonoBehaviour
     {
         if (isColorBomb)
         {
-            GetComponent<SpriteRenderer>().material = colorBombMaterial;
+            GetComponent<SpriteRenderer>().sprite = colorBombMaterial;
+        }
+        else if (isMassBomb)
+        {
+            GetComponent<SpriteRenderer>().sprite = massBombMaterial;
         }
         else
         {
-            GetComponent<SpriteRenderer>().material = originalMaterial;
+            GetComponent<SpriteRenderer>().sprite = originalMaterial;
         }
 
-        if (isMassBomb)
-        {
-            GetComponent<SpriteRenderer>().material = massBombMaterial;
-        }
-        else
-        {
-            GetComponent<SpriteRenderer>().material = originalMaterial;
-        }
     }
 
 }

@@ -111,7 +111,7 @@ public class MatchFinder : MonoBehaviour
         }
     }
 
-    public void CheckForBomb()
+    public void CheckForColorBomb()
     {
         if (boardData.selectedBall != null)
         {
@@ -120,6 +120,19 @@ public class MatchFinder : MonoBehaviour
                 boardData.selectedBall.isMatched = false;
                 boardData.selectedBall.isColorBomb = true;
                 boardData.selectedBall.CreateColorBomb();
+            }
+        }
+    }
+
+    public void CheckForMassBomb()
+    {
+        if (boardData.selectedBall != null)
+        {
+            if (boardData.selectedBall.isMatched)
+            {
+                boardData.selectedBall.isMatched = false;
+                boardData.selectedBall.isMassBomb = true;
+                boardData.selectedBall.CreateMassBomb();
             }
         }
     }

@@ -4,14 +4,18 @@ using UnityEngine;
 
 
 
+
 public class BoardManager : MonoBehaviour
 {
     public SpecialObjectHandler specialObject;
     public BoardData data;
     public GameState currentState = GameState.move;
     [SerializeField] GameObject mainBallPrefab;
+    [SerializeField] GameObject levelTimerHandler;
 
     private MatchFinder findMatches;
+
+
 
     private void OnEnable()
     {
@@ -22,6 +26,7 @@ public class BoardManager : MonoBehaviour
                 ball.GetComponent<Ball>().boardData = data;
             }
         }
+
     }
 
     private void Start()
@@ -30,10 +35,10 @@ public class BoardManager : MonoBehaviour
         data.allTiles = new BackgroundGrid[data.width, data.height];
         data.allBalls = new GameObject[data.width, data.height];
         SpawnBackground();
-
+        Time.timeScale = 0f;
     }
 
-    void SpawnBackground()
+    public void SpawnBackground()
     {
         for (int x = 0; x < data.width; x++)
         {
@@ -207,5 +212,17 @@ public class BoardManager : MonoBehaviour
         }
         yield return new WaitForSeconds(.3f);
         currentState = GameState.move;
+    }
+
+    public void ClearBackground()
+    {
+
+        foreach (GameObject ball in data.allBalls)
+        {
+            if (ball != null)
+            {
+                Destroy(ball);
+            }
+        }
     }
 }

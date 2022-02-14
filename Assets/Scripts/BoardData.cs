@@ -9,9 +9,8 @@ public enum GameState
 [CreateAssetMenu(fileName = "BoardData", menuName = "BoardManagerData")]
 public class BoardData : ScriptableObject
 {
-
-
     public GameState currentState = GameState.move;
+
     public int width;
     public int height;
     public int offset;
@@ -21,6 +20,7 @@ public class BoardData : ScriptableObject
     public BackgroundGrid[,] allTiles;
     public GameObject[,] allBalls;
     public Ball selectedBall;
+
 
     public enum GameState
     {

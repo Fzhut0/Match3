@@ -31,9 +31,12 @@ public class Ball : MonoBehaviour
 
     public Material colorBombMaterial;
     public Material originalMaterial;
-    public bool isColorBomb;
+    public Material massBombMaterial;
 
-    public List<GameObject> nearBalls = new List<GameObject>();
+
+    public bool isColorBomb;
+    public bool isMassBomb;
+
 
     private void Start()
     {
@@ -51,21 +54,15 @@ public class Ball : MonoBehaviour
                 previousColumn = column;
                 previousRow = row;
         */
-        // CheckNearTiles();
+
     }
 
 
     private void Update()
     {
         SwitchBallPosition();
-        if (isColorBomb)
-        {
-            GetComponent<SpriteRenderer>().material = colorBombMaterial;
-        }
-        else
-        {
-            GetComponent<SpriteRenderer>().material = originalMaterial;
-        }
+        BombColorCheck();
+
     }
 
     private void OnMouseDown()
@@ -83,6 +80,7 @@ public class Ball : MonoBehaviour
             finalTouchPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
             CalculateAngle();
         }
+
     }
 
     void CalculateAngle()
@@ -97,7 +95,6 @@ public class Ball : MonoBehaviour
         else
         {
             board.currentState = GameState.move;
-
         }
     }
 
@@ -217,20 +214,38 @@ public class Ball : MonoBehaviour
 
     }
 
-    public void CheckNearTiles()
-    {
-        foreach (GameObject pos in boardData.allBalls)
-        {
-            if (Vector2.Distance(transform.position, pos.transform.position) <= 1.5f)
-            {
-                nearBalls.Add(pos);
-            }
-        }
-    }
+
+
 
     public void CreateColorBomb()
     {
         isColorBomb = true;
+    }
+
+    public void CreateMassBomb()
+    {
+        isMassBomb = true;
+    }
+
+    void BombColorCheck()
+    {
+        if (isColorBomb)
+        {
+            GetComponent<SpriteRenderer>().material = colorBombMaterial;
+        }
+        else
+        {
+            GetComponent<SpriteRenderer>().material = originalMaterial;
+        }
+
+        if (isMassBomb)
+        {
+            GetComponent<SpriteRenderer>().material = massBombMaterial;
+        }
+        else
+        {
+            GetComponent<SpriteRenderer>().material = originalMaterial;
+        }
     }
 
 }

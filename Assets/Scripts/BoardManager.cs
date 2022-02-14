@@ -89,11 +89,13 @@ public class BoardManager : MonoBehaviour
     {
         if (data.allBalls[column, row].GetComponent<Ball>().isMatched)
         {
-
-
             if (findMatches.specialObject.currentMatches.Count == 5 || findMatches.specialObject.currentMatches.Count == 7)
             {
-                findMatches.CheckForBomb();
+                findMatches.CheckForColorBomb();
+            }
+            if (findMatches.specialObject.currentMatches.Count == 4)
+            {
+                findMatches.CheckForMassBomb();
             }
             findMatches.specialObject.currentMatches.Remove(data.allBalls[column, row]);
             Destroy(data.allBalls[column, row]);

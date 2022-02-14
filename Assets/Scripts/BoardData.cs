@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+
 public enum GameState
 {
     wait,
@@ -27,6 +28,7 @@ public class BoardData : ScriptableObject
         wait,
         move
     }
+
 
 
 

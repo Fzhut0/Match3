@@ -11,7 +11,7 @@ public class BoardManager : MonoBehaviour
     public BoardData data;
     public GameState currentState = GameState.move;
     [SerializeField] GameObject mainBallPrefab;
-    [SerializeField] GameObject levelTimerHandler;
+
 
     private MatchFinder findMatches;
 

@@ -12,12 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 05cba11da0717224dbe7c56fee90b8a5, type: 3}
   m_Name: ScoreL1
   m_EditorClassIdentifier: 
-  currentMatches:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
+  currentMatches: []
   score: 0
-  scoreToWin: 500
+  scoreToWin: 1000

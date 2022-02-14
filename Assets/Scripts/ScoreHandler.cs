@@ -8,6 +8,7 @@ public class ScoreHandler : MonoBehaviour
     public SpecialObjectHandler scoreData;
     [SerializeField] TextMeshProUGUI scoreDisplay;
 
+
     private void Start()
     {
         scoreData.score = 0;
@@ -15,6 +16,6 @@ public class ScoreHandler : MonoBehaviour
 
     void Update()
     {
-        scoreDisplay.text = scoreData.score.ToString();
+        scoreDisplay.text = scoreData.score.ToString() + " / " + scoreData.scoreToWin;
     }
 }

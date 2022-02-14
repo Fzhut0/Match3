@@ -10,4 +10,5 @@ public class SpecialObjectHandler : ScriptableObject
     public List<GameObject> currentMatches = new List<GameObject>();
 
     public int score;
+    public int scoreToWin;
 }

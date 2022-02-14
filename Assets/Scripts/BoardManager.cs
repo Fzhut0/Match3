@@ -9,8 +9,20 @@ public class BoardManager : MonoBehaviour
     public SpecialObjectHandler specialObject;
     public BoardData data;
     public GameState currentState = GameState.move;
+    [SerializeField] GameObject mainBallPrefab;
 
     private MatchFinder findMatches;
+
+    private void OnEnable()
+    {
+        foreach (GameObject ball in data.balls)
+        {
+            if (ball.GetComponent<Ball>().boardData != data)
+            {
+                ball.GetComponent<Ball>().boardData = data;
+            }
+        }
+    }
 
     private void Start()
     {

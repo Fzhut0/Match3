@@ -2,19 +2,19 @@
 
 <h2>Controls:</h2> 
 
-Click on ball and slide into desired direction.
+Click on ball with left mouse button and slide into desired direction.
 
 Esc - Quit
 
-<h2> WebGL version to check </h2>
+<h2> WebGL version </h2>
 https://play.unity.com/mg/other/match3web
 
 <h2>Other</h2>
 Most of data used and shared by core mechanics(spawn, destroy on match, movement) is stored in one scriptable object file called BoardData.
 
-With board data being held in separate object each level can be easily adjusted.
+With board data being held in separate object, each level can be easily adjusted.
 
-There are two levels made so far. Next levels could be easily made with different win conditions like destroying certain amount of specific color, spawning certain amount of special objects, getting certain amount of match combos or just be re-sized with different timings-score to beat.
+There are two levels made so far. Next levels could be made with different win conditions like destroying certain amount of specific color, spawning certain amount of special objects, getting certain amount of match combos or just be re-sized with different timings-score to beat.
 
 
 DOTween was used for movement and collapsing after match.
@@ -26,7 +26,7 @@ Color Bomb - destroys all objects of same color
 
 Mass bomb - destroys all objects in area of itself (has to be matched again with same color)
 
-Both objects are spawned for fixed amount of matches.
+Both objects are spawned after getting match of fixed amount of balls.
 
 
 
